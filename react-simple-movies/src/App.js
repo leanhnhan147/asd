@@ -1,5 +1,7 @@
 import { Fragment } from "react";
-import { NavLink } from "react-router-dom";
+
+import "swiper/scss";
+import MovieList from "./components/movie/MovieList";
 
 function App() {
   return (
@@ -8,7 +10,7 @@ function App() {
         <span className="text-primary">Home</span>
         <span>Movies</span>
       </header>
-      <section className="banner h-[400px] page-container">
+      <section className="banner h-[500px] page-container mb-20">
         <div className="w-full h-full rounded-lg bg-white relative">
           <div className="overlay absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.5)] rounded-lg"></div>
           <img
@@ -31,6 +33,56 @@ function App() {
             </div>
             <button className="py-3 px-6 rounded-lg bg-primary text-white font-medium">
               Watch Now
+            </button>
+          </div>
+        </div>
+      </section>
+      <section className="movies-layout page-container pb-20">
+        <h2 className="capitalize text-white mb-10 text-3xl font-bold">
+          Now playing
+        </h2>
+        <MovieList></MovieList>
+      </section>
+      <section className="movies-layout page-container pb-20">
+        <h2 className="capitalize text-white mb-10 text-3xl font-bold">
+          Top Rated
+        </h2>
+        <div className="movie-list grid grid-cols-4 gap-10">
+          <div className="movie-card rounded-lg p-3 bg-slate-800 text-white">
+            <img
+              src="https://genk.mediacdn.vn/139269124445442048/2023/3/21/2-1678952794059212944743-1679413965674-16794139658171930690431.jpg"
+              alt=""
+              className="w-full h-[250px] object-cover rounded-lg mb-5"
+            />
+            <h3 className="text-xl font-bold mb-3">Spidermen: Homecoming</h3>
+            <div className="flex items-center justify-between text-sm opacity-50 mb-10">
+              <span>2017</span>
+              <span>7.4</span>
+            </div>
+            <button className="py-3 px-6 rounded-lg capitalize bg-primary w-full">
+              Watch now
+            </button>
+          </div>
+        </div>
+      </section>
+      <section className="movies-layout page-container pb-20">
+        <h2 className="capitalize text-white mb-10 text-3xl font-bold">
+          Trending
+        </h2>
+        <div className="movie-list grid grid-cols-4 gap-10">
+          <div className="movie-card rounded-lg p-3 bg-slate-800 text-white">
+            <img
+              src="https://genk.mediacdn.vn/139269124445442048/2023/3/21/2-1678952794059212944743-1679413965674-16794139658171930690431.jpg"
+              alt=""
+              className="w-full h-[250px] object-cover rounded-lg mb-5"
+            />
+            <h3 className="text-xl font-bold mb-3">Spidermen: Homecoming</h3>
+            <div className="flex items-center justify-between text-sm opacity-50 mb-10">
+              <span>2017</span>
+              <span>7.4</span>
+            </div>
+            <button className="py-3 px-6 rounded-lg capitalize bg-primary w-full">
+              Watch now
             </button>
           </div>
         </div>
