@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { SwiperSlide, Swiper } from "swiper/react";
 import MovieCard from "./MovieCard";
 import useSWR from "swr";
