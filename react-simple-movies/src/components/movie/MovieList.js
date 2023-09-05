@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { SwiperSlide, Swiper } from "swiper/react";
 import MovieCard from "./MovieCard";
-import "swiper/scss";
 import useSWR from "swr";
 import { fetcher } from "../../Config";
 
 const MovieList = ({ type = "now_playing" }) => {
-  const [movies, setMovies] = useState([]);
+  // const [movies, setMovies] = useState([]);
   const { data } = useSWR(
     `https://api.themoviedb.org/3/movie/${type}?api_key=798ec05a67fae3f0f02ccab8abbc178f`,
     fetcher
   );
-  useEffect(() => {
-    if (data && data.results) {
-      setMovies(data.results);
-    }
-  }, [data]);
-  console.log(data);
+  const movies = data?.results || [];
+  // useEffect(() => {
+  //   if (data && data.results) {
+  //     setMovies(data.results);
+  //   }
+  // }, [data]);
 
   return (
     <div className="movie-list">
