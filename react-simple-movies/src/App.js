@@ -47,45 +47,13 @@ function App() {
         <h2 className="capitalize text-white mb-10 text-3xl font-bold">
           Top Rated
         </h2>
-        <div className="movie-list grid grid-cols-4 gap-10">
-          <div className="movie-card rounded-lg p-3 bg-slate-800 text-white">
-            <img
-              src="https://genk.mediacdn.vn/139269124445442048/2023/3/21/2-1678952794059212944743-1679413965674-16794139658171930690431.jpg"
-              alt=""
-              className="w-full h-[250px] object-cover rounded-lg mb-5"
-            />
-            <h3 className="text-xl font-bold mb-3">Spidermen: Homecoming</h3>
-            <div className="flex items-center justify-between text-sm opacity-50 mb-10">
-              <span>2017</span>
-              <span>7.4</span>
-            </div>
-            <button className="py-3 px-6 rounded-lg capitalize bg-primary w-full">
-              Watch now
-            </button>
-          </div>
-        </div>
+        <MovieList type="top_rated"></MovieList>
       </section>
       <section className="movies-layout page-container pb-20">
         <h2 className="capitalize text-white mb-10 text-3xl font-bold">
           Trending
         </h2>
-        <div className="movie-list grid grid-cols-4 gap-10">
-          <div className="movie-card rounded-lg p-3 bg-slate-800 text-white">
-            <img
-              src="https://genk.mediacdn.vn/139269124445442048/2023/3/21/2-1678952794059212944743-1679413965674-16794139658171930690431.jpg"
-              alt=""
-              className="w-full h-[250px] object-cover rounded-lg mb-5"
-            />
-            <h3 className="text-xl font-bold mb-3">Spidermen: Homecoming</h3>
-            <div className="flex items-center justify-between text-sm opacity-50 mb-10">
-              <span>2017</span>
-              <span>7.4</span>
-            </div>
-            <button className="py-3 px-6 rounded-lg capitalize bg-primary w-full">
-              Watch now
-            </button>
-          </div>
-        </div>
+        <MovieList type="popular"></MovieList>
       </section>
     </Fragment>
   );
