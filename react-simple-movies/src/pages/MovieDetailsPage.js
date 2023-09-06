@@ -9,7 +9,8 @@ const MovieDetailsPage = () => {
     `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`,
     fetcher
   );
-  console.log(data);
+  // console.log(data);
+
   if (!data) return null;
   const { backdrop_path, poster_path, title, genres, overview } = data;
   return (
@@ -49,6 +50,7 @@ const MovieDetailsPage = () => {
         {overview}
       </p>
       <MovieCredits></MovieCredits>
+      <MovieVideos></MovieVideos>
     </div>
   );
 };
@@ -61,14 +63,14 @@ function MovieCredits() {
     `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`,
     fetcher
   );
-  console.log(data);
+  // console.log(data);
 
   if (!data) return null;
   const { cast } = data;
   if (!cast || cast.length <= 0) return null;
 
   return (
-    <>
+    <div className="py-10">
       <h2 className="text-center text-3xl mb-10">Casts</h2>
       <div className="grid grid-cols-4 gap-5 ">
         {cast.slice(0, 4).map((item) => (
@@ -82,7 +84,48 @@ function MovieCredits() {
           </div>
         ))}
       </div>
-    </>
+    </div>
+  );
+}
+
+// https://api.themoviedb.org/3/movie/{movie_id}/videos
+
+function MovieVideos() {
+  const { movieId } = useParams();
+  const { data } = useSWR(
+    `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}`,
+    fetcher
+  );
+  console.log(data);
+
+  if (!data) return null;
+  const { results } = data;
+  if (!results || results.length <= 0) return null;
+
+  return (
+    <div className="py-10">
+      <div className="flex flex-col gap-10">
+        {results.slice(0, 2).map((item) => (
+          <div className="" key={item.id}>
+            <h3 className="mb-5 text-xl font-medium p-3 bg-secondary inline-block">
+              {item.name}
+            </h3>
+            <div className="w-full aspect-video" key={item.id}>
+              <iframe
+                width="1280"
+                height="720"
+                src={`https://www.youtube.com/embed/${item.key}`}
+                title='Hành Trình Rực Rỡ | Tập 15:Negav bị Phát La tát cú trời giáng, Dương Lâm "ép hôn" Bích Phương, Isaac'
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                className="w-full h-full object-fill"
+              ></iframe>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
