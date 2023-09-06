@@ -2,6 +2,8 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import { apiKey, fetcher } from "../Config";
+import { SwiperSlide, Swiper } from "swiper/react";
+import MovieCard from "../components/movie/MovieCard";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
@@ -51,6 +53,7 @@ const MovieDetailsPage = () => {
       </p>
       <MovieCredits></MovieCredits>
       <MovieVideos></MovieVideos>
+      <MovieSimilar></MovieSimilar>
     </div>
   );
 };
@@ -96,7 +99,7 @@ function MovieVideos() {
     `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}`,
     fetcher
   );
-  console.log(data);
+  // console.log(data);
 
   if (!data) return null;
   const { results } = data;
@@ -116,14 +119,45 @@ function MovieVideos() {
                 height="720"
                 src={`https://www.youtube.com/embed/${item.key}`}
                 title='Hành Trình Rực Rỡ | Tập 15:Negav bị Phát La tát cú trời giáng, Dương Lâm "ép hôn" Bích Phương, Isaac'
-                frameborder="0"
+                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen
+                allowFullScreen
                 className="w-full h-full object-fill"
               ></iframe>
             </div>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+// https://api.themoviedb.org/3/movie/{movie_id}/similar
+
+function MovieSimilar() {
+  const { movieId } = useParams();
+  const { data } = useSWR(
+    `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${apiKey}`,
+    fetcher
+  );
+  console.log(data);
+
+  if (!data) return null;
+  const { results } = data;
+  if (!results || results.length <= 0) return null;
+
+  return (
+    <div className="py-10">
+      <h2 className="text-3xl font-medium mb-10">Similar movie</h2>
+      <div className="movie-list">
+        <Swiper grabCursor={"true"} spaceBetween={40} slidesPerView={"auto"}>
+          {results.length > 0 &&
+            results.map((item) => (
+              <SwiperSlide key={item.id}>
+                <MovieCard item={item}></MovieCard>
+              </SwiperSlide>
+            ))}
+        </Swiper>
       </div>
     </div>
   );
