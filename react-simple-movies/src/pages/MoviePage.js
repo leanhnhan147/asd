@@ -16,7 +16,8 @@ const MoviePage = () => {
     setFilter(e.target.value);
   };
 
-  const { data } = useSWR(url, fetcher);
+  const { data, error } = useSWR(url, fetcher);
+  const loading = !data && !error;
 
   useEffect(() => {
     if (filterDebounce) {
@@ -58,8 +59,12 @@ const MoviePage = () => {
         </button>
       </div>
 
+      {loading && (
+        <div className="w-10 h-10 rounded-full border-4 border-primary border-t-transparent border-t-4 mx-auto animate-spin"></div>
+      )}
       <div className="grid grid-cols-4 gap-10">
-        {movies.length > 0 &&
+        {!loading &&
+          movies.length > 0 &&
           movies.map((item) => (
             <MovieCard key={item.id} item={item}></MovieCard>
           ))}
