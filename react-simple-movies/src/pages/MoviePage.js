@@ -3,11 +3,16 @@ import useSWR from "swr";
 import { apiKey, fetcher } from "../Config";
 import MovieCard from "../components/movie/MovieCard";
 import useDebounce from "../hooks/useDebounce";
+import ReactPaginate from "react-paginate";
 
 // https://api.themoviedb.org/3/search/movie
 
-const pageCount = 5;
+const itemsPerPage = 20;
+
 const MoviePage = () => {
+  const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);
+
   const [nextPage, setNextPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [url, setUrl] = useState(
@@ -34,6 +39,17 @@ const MoviePage = () => {
   }, [filterDebounce, nextPage]);
 
   const movies = data?.results || [];
+
+  useEffect(() => {
+    if (!data || !data.total_results) return;
+    setPageCount(Math.ceil(data.total_results / itemsPerPage));
+  }, [data, itemOffset]);
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % data.total_results;
+    setItemOffset(newOffset);
+    setNextPage(event.selected + 1);
+  };
 
   return (
     <div className="py-10 page-container">
@@ -75,50 +91,17 @@ const MoviePage = () => {
           ))}
       </div>
 
-      <div className="flex items-center justify-center">
-        <span className="cursor-pointer mx-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-            onClick={() => setNextPage(nextPage - 1)}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15.75 19.5L8.25 12l7.5-7.5"
-            />
-          </svg>
-        </span>
-        {new Array(pageCount).fill(0).map((item, index) => (
-          <span
-            className="cursor-pointer inline-block py-2 px-3 leading-none bg-white text-slate-900 mx-2"
-            onClick={() => setNextPage(index + 1)}
-          >
-            {index + 1}
-          </span>
-        ))}
-
-        <span className="cursor-pointer mx-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-            onClick={() => setNextPage(nextPage + 1)}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M8.25 4.5l7.5 7.5-7.5 7.5"
-            />
-          </svg>
-        </span>
+      <div className="mt-10">
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="< previous"
+          renderOnZeroPageCount={null}
+          className="pagination"
+        />
       </div>
     </div>
   );
