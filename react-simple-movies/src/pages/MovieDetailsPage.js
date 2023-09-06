@@ -30,7 +30,7 @@ const MovieDetailsPage = () => {
           alt=""
         />
       </div>
-      <h1 className="text-center text-3xl font-bold text-white mb-10">
+      <h1 className="text-center text-4xl font-bold text-white mb-10">
         {title}
       </h1>
       {genres.length > 0 && (
@@ -45,11 +45,45 @@ const MovieDetailsPage = () => {
           ))}
         </div>
       )}
-      <p className="text-center leading-relaxed max-w-[600px] mx-auto">
+      <p className="text-center leading-relaxed max-w-[600px] mx-auto mb-10">
         {overview}
       </p>
+      <MovieCredits></MovieCredits>
     </div>
   );
 };
+
+// https://api.themoviedb.org/3/movie/{movie_id}/credits
+
+function MovieCredits() {
+  const { movieId } = useParams();
+  const { data } = useSWR(
+    `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`,
+    fetcher
+  );
+  console.log(data);
+
+  if (!data) return null;
+  const { cast } = data;
+  if (!cast || cast.length <= 0) return null;
+
+  return (
+    <>
+      <h2 className="text-center text-3xl mb-10">Casts</h2>
+      <div className="grid grid-cols-4 gap-5 ">
+        {cast.slice(0, 4).map((item) => (
+          <div className="cast-item" key={item.id}>
+            <img
+              className="w-full h-[350px] object-cover rounded-lg mb-3"
+              src={`https://image.tmdb.org/t/p/original/${item.profile_path}`}
+              alt=""
+            />
+            <h3 className="text-xl font-medium">{item.name}</h3>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
 
 export default MovieDetailsPage;
