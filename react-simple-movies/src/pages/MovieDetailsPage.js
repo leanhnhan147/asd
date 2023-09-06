@@ -1,16 +1,13 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
-import { apiKey, fetcher } from "../Config";
+import { fetcher, tmdbAPI } from "../Config";
 import { SwiperSlide, Swiper } from "swiper/react";
 import MovieCard from "../components/movie/MovieCard";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
-  const { data } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`,
-    fetcher
-  );
+  const { data } = useSWR(tmdbAPI.getMovieDetails(movieId), fetcher);
   // console.log(data);
 
   if (!data) return null;
@@ -22,14 +19,14 @@ const MovieDetailsPage = () => {
         <div
           className="w-full h-full bg-cover bg-no-repeat"
           style={{
-            backgroundImage: `url(https://image.tmdb.org/t/p/original/${backdrop_path})`,
+            backgroundImage: `url(${tmdbAPI.imageOriginal(backdrop_path)})`,
           }}
         ></div>
       </div>
       <div className="w-full h-[400px] max-w-[800px] mx-auto -mt-[200px] relative z-10 pb-10">
         <img
           className="w-full h-full object-cover rounded-xl"
-          src={`https://image.tmdb.org/t/p/original/${poster_path}`}
+          src={tmdbAPI.imageOriginal(poster_path)}
           alt=""
         />
       </div>
@@ -62,10 +59,7 @@ const MovieDetailsPage = () => {
 
 function MovieCredits() {
   const { movieId } = useParams();
-  const { data } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`,
-    fetcher
-  );
+  const { data } = useSWR(tmdbAPI.getMovieMeta(movieId, "credits"), fetcher);
   // console.log(data);
 
   if (!data) return null;
@@ -80,7 +74,7 @@ function MovieCredits() {
           <div className="cast-item" key={item.id}>
             <img
               className="w-full h-[350px] object-cover rounded-lg mb-3"
-              src={`https://image.tmdb.org/t/p/original/${item.profile_path}`}
+              src={tmdbAPI.imageOriginal(item.profile_path)}
               alt=""
             />
             <h3 className="text-xl font-medium">{item.name}</h3>
@@ -95,10 +89,7 @@ function MovieCredits() {
 
 function MovieVideos() {
   const { movieId } = useParams();
-  const { data } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}`,
-    fetcher
-  );
+  const { data } = useSWR(tmdbAPI.getMovieMeta(movieId, "videos"), fetcher);
   // console.log(data);
 
   if (!data) return null;
@@ -136,10 +127,7 @@ function MovieVideos() {
 
 function MovieSimilar() {
   const { movieId } = useParams();
-  const { data } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${apiKey}`,
-    fetcher
-  );
+  const { data } = useSWR(tmdbAPI.getMovieMeta(movieId, "similar"), fetcher);
   console.log(data);
 
   if (!data) return null;
